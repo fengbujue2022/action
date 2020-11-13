@@ -35,7 +35,5 @@ jobs:
        
     - name: Run
       env:
-        toEmailAddressList: ${{secrets.TOEMAILADDRESSLIST}}
-        emailAccount: ${{secrets.EMAILACCOUNT}}
-        emailKey: ${{secrets.EMAILACCOUNT}}
-      run: dotnet run -p ./TaskConsoleApp -toEmailAddressList=${toEmailAddressList} -emailAccount=${emailAccount} -emailKey=${emailKey}
+        emailKey: ${{secrets.EMAILKEY}}
+      run: dotnet run -p ./TaskConsoleApp -emailKey=${emailKey}
