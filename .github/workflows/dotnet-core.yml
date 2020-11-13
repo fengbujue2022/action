@@ -1,25 +1,40 @@
-name: .NET Core
+name: fengbujue-action
+
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch: 
+  schedule: 
+    - cron: '10 6 * * *' 
+    
 
 jobs:
-  build:
+  run-bilibili-tool:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Set time zone
+      run: sudo timedatectl set-timezone 'Asia/Shanghai'
+      
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
-    - name: Install dependencies
+
+    - name: Restore
       run: dotnet restore
+      
     - name: Build
       run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+       
+    - name: Run
+      env:
+        toEmailAddressList: ${{secrets.ToEmailAddressList}}
+        emailAccount: ${{secrets.EmailAccount}}
+        emailKey: ${{secrets.EmailKey}}
+        otherConfigs: ${{secrets.OTHERCONFIGS}}
+      run: dotnet run -p ./TaskConsoleApp -toEmailAddressList=${toEmailAddressList} -emailAccount=${emailAccount} -emailKey=${emailKey}

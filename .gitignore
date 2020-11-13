@@ -1,0 +1,7 @@
+APIClient/bin/
+APIClient/obj/
+TaskConsoleApp/bin/
+TaskConsoleApp/obj/
+Infrastructure/bin/
+Infrastructure/obj/
+.vs/
