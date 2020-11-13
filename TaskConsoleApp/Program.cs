@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ConsoleApp
@@ -37,7 +38,9 @@ namespace ConsoleApp
             var configuation = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile($"appsettings.json", true, true)
-                .AddCommandLine(args)
+                .AddCommandLine(args, new Dictionary<string, string>() {
+                    {"-emailKey","EmailKey" },
+                })
                 .Build();
 
             services.AddOptions()
