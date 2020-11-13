@@ -6,7 +6,7 @@ namespace ConsoleApp
 {
     public  class Config
     {
-        public IEnumerable<string> ToEmailAddressList { get; set; }
+        public string ToEmailAddressList { get; set; }
         public string EmailAccount { get; set; }
         public string EmailKey { get; set; }
     }

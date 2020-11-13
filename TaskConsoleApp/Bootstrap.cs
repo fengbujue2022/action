@@ -36,7 +36,7 @@ namespace ConsoleApp
 
             var hitokoResponse = await _hitokotoApi.FetchContent(Category.NeteaseCloud);
             var config = _configOptions.CurrentValue;
-            var toEmailAddressList = config.ToEmailAddressList;
+            var toEmailAddressList = config.ToEmailAddressList.Split(",");
             if (toEmailAddressList.Any())
             {
                 foreach (var to in toEmailAddressList)
