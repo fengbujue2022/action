@@ -2,6 +2,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Infrastructure.Autofac.Modules;
+using Infrastructure.Trace;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
@@ -17,8 +18,9 @@ namespace ConsoleApp
         static async Task Main(string[] args)
         {
             var provider = BuildServicePorvider(args);
+            var taskTracing = provider.GetService<TaskTracing>();
             var bootstrap = provider.GetService<Bootstrap>();
-            await bootstrap.Main();
+            await taskTracing.Run(() => bootstrap.Main());
         }
 
         public static IServiceProvider BuildServicePorvider(string[] args)
@@ -54,9 +56,16 @@ namespace ConsoleApp
             {
                 builder.AddSerilog(dispose: true, logger: logger);
             });
+            //task trace
+            services.AddTaskTracing();
+
             //refit
             services.AddRefitClient<HitokotoApi>()
-                .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://v1.hitokoto.cn"));
+                .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://v1.hitokoto.cn"))
+                .AddHttpMessageHandler((provider) =>
+                {
+                    return provider.GetService<TracingHttpClientHandler>();
+                });
         }
     }
 }

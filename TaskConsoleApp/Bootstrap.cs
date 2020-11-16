@@ -33,7 +33,6 @@ namespace ConsoleApp
         protected async Task DailyNeteaseCloud()
         {
             _logger.LogInformation("-----网抑云模式开始-----");
-
             var hitokoResponse = await _hitokotoApi.FetchContent(Category.NeteaseCloud);
             var config = _configOptions.CurrentValue;
             var toEmailAddressList = config.ToEmailAddressList.Split(",");
@@ -49,7 +48,6 @@ namespace ConsoleApp
             }
 
             _logger.LogInformation("-----网抑云模式关闭-----");
-
         }
 
         protected async static Task SendEmailAsync(string to, string from, string key, string message)
